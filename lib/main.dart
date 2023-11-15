@@ -6,7 +6,6 @@ void main() => runApp(new MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var word_pairs = new WordPair.random();
     return new MaterialApp(
       debugShowCheckedModeBanner: true,
       title: 'Welcome to Flutter',
@@ -15,9 +14,22 @@ class MyApp extends StatelessWidget {
           title: const Text('Welcome to Flutter'),
         ),
         body: new Center(
-          child: new Text(word_pairs.asPascalCase),
+          child: new MyRandomWords(),
         ),
       ),
     );
   }
+}
+
+class RandomWordsState extends State<MyRandomWords> {
+  @override
+  Widget build(BuildContext context) {
+    final WordPair randomwords = new WordPair.random();
+    return new Text(randomwords.asPascalCase);
+  }
+}
+
+class MyRandomWords extends StatefulWidget {
+  @override
+  RandomWordsState createState() => new RandomWordsState();
 }
