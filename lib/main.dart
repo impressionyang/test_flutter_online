@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
@@ -7,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       title: 'Welcome to Flutter',
       home: new MyRandomWords(),
     );
@@ -21,12 +23,45 @@ class RandomWordsState extends State<MyRandomWords> {
 
   @override
   Widget build(BuildContext context) {
-    final WordPair randomwords = new WordPair.random();
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('data'),
+        actions: <Widget>[
+          new IconButton(icon: const Icon(Icons.menu), onPressed: _pushSaved),
+        ],
       ),
       body: _buildSuggestions(),
+    );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = _wordpairSet.map(
+            (WordPair pair) {
+              return ListTile(
+                title: Text(
+                  pair.asPascalCase,
+                  style: _biggerfont,
+                ),
+              );
+            },
+          );
+
+          final List<Widget> divided = ListTile.divideTiles(
+            context: context,
+            tiles: tiles,
+          ).toList();
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('route favorite'),
+            ),
+            body: ListView(children: divided),
+          );
+        },
+      ),
     );
   }
 
