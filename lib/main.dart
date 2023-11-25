@@ -3,15 +3,18 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Welcome to Flutter',
-      home: new MyRandomWords(),
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+      ),
+      home: MyRandomWords(),
     );
   }
 }
@@ -19,15 +22,16 @@ class MyApp extends StatelessWidget {
 class RandomWordsState extends State<MyRandomWords> {
   final List<WordPair> _wordpairsList = <WordPair>[];
   final TextStyle _biggerfont = const TextStyle(fontSize: 18);
-  final Set<WordPair> _wordpairSet = new Set<WordPair>();
+  final Set<WordPair> _wordpairSet = Set<WordPair>();
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.purple,
         title: const Text('data'),
         actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.menu), onPressed: _pushSaved),
+          IconButton(icon: const Icon(Icons.menu), onPressed: _pushSaved),
         ],
       ),
       body: _buildSuggestions(),
@@ -57,6 +61,7 @@ class RandomWordsState extends State<MyRandomWords> {
           return Scaffold(
             appBar: AppBar(
               title: const Text('route favorite'),
+              backgroundColor: Colors.purple,
             ),
             body: ListView(children: divided),
           );
@@ -66,7 +71,7 @@ class RandomWordsState extends State<MyRandomWords> {
   }
 
   Widget _buildSuggestions() {
-    return new ListView.builder(
+    return ListView.builder(
         padding: const EdgeInsets.all(16.0),
         itemBuilder: (BuildContext _context, int i) {
           final int index = i ~/ 2;
@@ -76,7 +81,7 @@ class RandomWordsState extends State<MyRandomWords> {
 
           if (i.isOdd) {
             // print('now i $i, index is $index, add devider');
-            return new Divider(
+            return Divider(
               thickness: 3.0,
             );
           } else {
@@ -87,19 +92,19 @@ class RandomWordsState extends State<MyRandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
-    bool _alreadySave = _wordpairSet.contains(pair);
-    return new ListTile(
-      title: new Text(
+    bool alreadySave = _wordpairSet.contains(pair);
+    return ListTile(
+      title: Text(
         pair.asPascalCase,
         style: _biggerfont,
       ),
-      trailing: new Icon(
-        _alreadySave ? Icons.favorite : Icons.favorite_border,
-        color: _alreadySave ? Colors.red : null,
+      trailing: Icon(
+        alreadySave ? Icons.favorite : Icons.favorite_border,
+        color: alreadySave ? Colors.red : null,
       ),
       onTap: () {
         setState(() {
-          if (_alreadySave) {
+          if (alreadySave) {
             _wordpairSet.remove(pair);
           } else {
             _wordpairSet.add(pair);
@@ -112,5 +117,5 @@ class RandomWordsState extends State<MyRandomWords> {
 
 class MyRandomWords extends StatefulWidget {
   @override
-  RandomWordsState createState() => new RandomWordsState();
+  RandomWordsState createState() => RandomWordsState();
 }
